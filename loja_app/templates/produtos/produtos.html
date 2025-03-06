@@ -12,16 +12,17 @@
         <div class="row g-4">
           {% for produto in cat.produto_set.all %}
             <div class="col-lg-3 col-md-4 col-sm-6">
-              <div class="card produto-card shadow-sm border rounded-3">
+              <div class="card produto-card shadow-sm border rounded-3 h-100">
+                {% load static %}
                 <img src="{{ produto.imagem.url }}" class="card-img-top p-2" alt="{{ produto.nome }}" 
                      style="width: 100%; height: 200px; object-fit: contain;">
                 
-                <div class="card-body text-center">
+                <div class="card-body text-center d-flex flex-column">
                   <h6 class="card-title text-dark fw-bold">{{ produto.nome }}</h6>
                   <p class="card-text text-muted small">{{ produto.descricao|truncatechars:50 }}</p>
                   <p class="card-text text-danger fw-bold fs-5">R$ {{ produto.preco }}</p>
       
-                  <div class="d-flex justify-content-between">
+                  <div class="mt-auto">
                     <a href="{% url 'loja_app:pagamento' produto.id %}" class="btn btn-sm btn-primary"><i class="fas fa-cart-plus"></i> Comprar</a>
                   </div>
                 </div>
@@ -50,11 +51,43 @@
   /* Melhorando a aparência dos produtos */
   .produto-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
   }
 
   .produto-card:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Garantindo que todas as imagens tenham o mesmo tamanho */
+  .card-img-top {
+    height: 200px;
+    object-fit: contain;
+  }
+
+  /* Ajustes para melhor responsividade */
+  @media (max-width: 767px) {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      font-size: 0.9rem;
+    }
+  }
+
+  .container {
+    max-width: 1000px;
   }
 </style>
 {% endblock %}

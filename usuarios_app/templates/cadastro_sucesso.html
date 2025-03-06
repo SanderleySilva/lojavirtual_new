@@ -1,0 +1,16 @@
+{% extends 'estilos/base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card shadow-lg p-4" style="max-width: 600px; width: 100%; border-radius: 12px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-success">Cadastro Realizado com Sucesso!</h2>
+            <p class="text-muted">O usuário {{ nome }} com o email {{ email }} foi cadastrado com sucesso.</p>
+        </div>
+        <div class="text-center">
+            <a href="{% url 'loja_app:home' %}" class="btn btn-primary me-2">Voltar para o Início</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Fazer Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

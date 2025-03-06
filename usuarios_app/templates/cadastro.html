@@ -6,6 +6,9 @@
         <div class="text-center mb-4">
             <h2 class="fw-bold text-primary">Crie sua conta</h2>
             <p class="text-muted">Preencha os dados abaixo para se cadastrar</p>
+            {% if error_message %}
+                <div class="alert alert-danger">{{ error_message }}</div>
+            {% endif %}
         </div>
         <form action="{% url 'cadastro' %}" method="POST">
             {% csrf_token %}

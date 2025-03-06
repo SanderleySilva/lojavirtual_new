@@ -18,17 +18,18 @@ def cadastro(request):
         confirmar_senha = request.POST.get('confirmar_senha')
 
         if senha != confirmar_senha:
-            return HttpResponse('As senhas não coincidem.')
+            return render(request, 'cadastro.html', {'error_message': 'As senhas não coincidem.'})
 
         user = User.objects.filter(email=email).first()
         if user:
-            return HttpResponse('Já existe um usuário com esse email.')
+            return render(request, 'cadastro.html', {'error_message': 'Já existe um usuário com esse email.'})
 
         username = email.split('@')[0]
 
         user = User.objects.create_user(username=username, first_name=nome, last_name=sobrenome, email=email, password=senha)
         user.save()
-        return HttpResponse(f'O usuário {nome} com o email {email} foi cadastrado com sucesso!')
+        return render(request, 'cadastro_sucesso.html', {'nome': nome, 'email': email})
+
 
 @csrf_exempt
 def login(request):
@@ -46,3 +47,7 @@ def login(request):
             return render(request, 'login.html', {'error_message': 'Email ou senha inválidos!'})
 
 
+
+
+def cadastro_sucesso(request):
+    return render(request, 'cadastro_sucesso.html')
