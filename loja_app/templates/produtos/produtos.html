@@ -1,0 +1,60 @@
+{% extends 'estilos/base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4 text-center text-primary">TODOS OS PRODUTOS POR CATEGORIA</h1>
+
+    {% for cat in categoria %}
+      {% if not cat.em_oferta %}
+      <div class="categoria-section mb-3">
+        <h3 class="categoria-titulo text-primary fw-semibold">{{ cat.nome }}</h3>
+
+        <div class="row g-4">
+          {% for produto in cat.produto_set.all %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <div class="card produto-card shadow-sm border rounded-3">
+                <img src="{{ produto.imagem.url }}" class="card-img-top p-2" alt="{{ produto.nome }}" 
+                     style="width: 100%; height: 200px; object-fit: contain;">
+                
+                <div class="card-body text-center">
+                  <h6 class="card-title text-dark fw-bold">{{ produto.nome }}</h6>
+                  <p class="card-text text-muted small">{{ produto.descricao|truncatechars:50 }}</p>
+                  <p class="card-text text-danger fw-bold fs-5">R$ {{ produto.preco }}</p>
+      
+                  <div class="d-flex justify-content-between">
+                    <a href="{% url 'loja_app:pagamento' produto.id %}" class="btn btn-sm btn-primary"><i class="fas fa-cart-plus"></i> Comprar</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-muted">Nenhum produto encontrado nesta categoria.</p>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    {% empty %}
+      <p class="text-muted">Nenhuma categoria encontrada.</p>
+    {% endfor %}
+  </div>
+
+<style>
+  /* Estilização do nome da categoria */
+  .categoria-titulo {
+    font-size: 1.3rem; /* Tamanho mais discreto */
+    border-bottom: 2px solid #007bff; /* Linha fina abaixo */
+    padding-bottom: 5px; /* Reduzido para ficar mais clean */
+    margin-bottom: 15px; /* Espaço abaixo para não grudar nos produtos */
+  }
+
+  /* Melhorando a aparência dos produtos */
+  .produto-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .produto-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+</style>
+{% endblock %}

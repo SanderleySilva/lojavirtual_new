@@ -1,0 +1,63 @@
+{% extends 'estilos/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-primary">Pagamento</h1>
+    <div class="row">
+        <!-- Coluna da imagem e informações do produto -->
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <img src="{{ produto.imagem.url }}" class="card-img-top p-2" alt="{{ produto.nome }}" style="width: 100%; height: auto; object-fit: contain;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ produto.nome }}</h5>
+                    <p class="card-text">{{ produto.descricao }}</p>
+                    <p class="card-text text-danger fw-bold fs-5">R$ {{ produto.preco }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Coluna do formulário de pagamento -->
+        <div class="col-md-6 mb-3">
+            <div class="card p-4 shadow-sm h-100">
+                <h5 class="card-title">Informações de Pagamento</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-credit-card"></i> Comprar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+  /* Ajustes para melhor responsividade */
+  @media (max-width: 767px) {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
+    }
+
+    .btn {
+      font-size: 0.9rem;
+    }
+  }
+
+  .card-img-top {
+    max-height: 300px;
+  }
+
+  .container {
+    max-width: 1000px;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'estilos/base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card shadow-lg p-4" style="max-width: 450px; width: 100%; border-radius: 12px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">Crie sua conta</h2>
+            <p class="text-muted">Preencha os dados abaixo para se cadastrar</p>
+        </div>
+        <form action="{% url 'cadastro' %}" method="POST">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="nome" class="form-label fw-semibold">Nome</label>
+                <input type="text" class="form-control" placeholder="Digite seu nome" name="nome" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="sobrenome" class="form-label fw-semibold">Sobrenome</label>
+                <input type="text" class="form-control" placeholder="Digite seu sobrenome" name="sobrenome" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control" placeholder="Digite seu email" name="email" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="telefone" class="form-label fw-semibold">Telefone</label>
+                <input type="text" class="form-control" placeholder="(00) 00000-0000" name="telefone">
+            </div>
+            
+            <div class="mb-3">
+                <label for="senha" class="form-label fw-semibold">Senha</label>
+                <input type="password" class="form-control" placeholder="Crie uma senha" name="senha" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="confirmar_senha" class="form-label fw-semibold">Confirmar Senha</label>
+                <input type="password" class="form-control" placeholder="Confirme sua senha" name="confirmar_senha" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 py-2">Cadastrar</button>
+        </form>
+        <p class="text-center mt-3 text-muted">Já tem uma conta? <a href="{% url 'login' %}" class="text-primary fw-semibold">Faça login</a></p>
+    </div>
+</div>
+{% endblock %}
