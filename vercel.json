@@ -2,8 +2,8 @@
   "version": 2,
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "lojaproject/wsgi.py"
+      "src": "lojaproject/wsgi.py",
+      "dest": "/(.*)"
     }
   ]
 }
