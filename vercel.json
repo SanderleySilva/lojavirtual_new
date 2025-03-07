@@ -1,9 +1,20 @@
 {
   "version": 2,
-  "routes": [
+  "builds": [
     {
       "src": "lojaproject/wsgi.py",
-      "dest": "/(.*)"
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb", "runtime": "python3.11.3" }
+    },
+    {
+      "src": "manage.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "lojaproject/wsgi.py"
     }
   ]
 }
