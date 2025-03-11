@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="34.206.54.112" id="dff7450f-ea2a-46ec-8fdd-86663cee6c17" keyPath="C:\Users\Sanderley\Desktop\DISCIPLINAS\ChavePrivate\key-ppk-lightsail.ppk" port="22" customName="AWS" nameFormat="CUSTOM" username="admin" useOpenSSHConfig="true">
+        <option name="customName" value="AWS" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

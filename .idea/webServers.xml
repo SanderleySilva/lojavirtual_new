@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="0fa0a335-14f9-4435-a10c-c95310d42f29" name="AWS">
+        <fileTransfer rootFolder="/home/admin/ecomerce/" accessType="SFTP" host="34.206.54.112" port="22" sshConfigId="dff7450f-ea2a-46ec-8fdd-86663cee6c17" sshConfig="AWS" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
