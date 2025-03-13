@@ -4,20 +4,50 @@
 <div class="container mt-4">
     <h1 class="text-primary">Pagamento</h1>
     <div class="row">
-        <!-- Coluna da imagem e informações do produto -->
-        <div class="col-md-6 mb-3">
-            <div class="card shadow-sm h-100">
-                <img src="{{ produto.imagem.url }}" class="card-img-top p-2" alt="{{ produto.nome }}" style="width: 100%; height: auto; object-fit: contain;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ produto.nome }}</h5>
-                    <p class="card-text">{{ produto.descricao }}</p>
-                    <p class="card-text text-danger fw-bold fs-5">R$ {{ produto.preco }}</p>
+        <!-- Coluna das informações dos produtos do carrinho -->
+        <div class="col-md-12 mb-3">
+            {% if itens_carrinho %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Imagem</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Preço</th>
+                                <th scope="col">Quantidade</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in itens_carrinho %}
+                                <tr>
+                                    <td><img src="{{ item.produto.imagem.url }}" alt="{{ item.produto.nome }}" class="img-thumbnail" style="max-width: 50px;"></td>
+                                    <td>{{ item.produto.nome }}</td>
+                                    <td>R$ {{ item.produto.preco|floatformat:2 }}</td>
+                                    <td>{{ item.quantidade }}</td>
+                                    <td>R$ {{ item.total_preco|floatformat:2 }}</td>
+                                    <td>
+                                        <a href="{% url 'carrinho_app:remover_do_carrinho' item.produto.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Remover</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-right fw-bold">Total Geral:</td>
+                                <td class="text-danger fw-bold">R$ {{ total_preco|floatformat:2 }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
-            </div>
+            {% else %}
+                <p class="text-muted">O carrinho está vazio.</p>
+            {% endif %}
         </div>
-        
+
         <!-- Coluna do formulário de pagamento -->
-        <div class="col-md-6 mb-3">
+        <div class="col-md-12 mb-3">
             <div class="card p-4 shadow-sm h-100">
                 <h5 class="card-title">Informações de Pagamento</h5>
                 <!-- Mensagem de aviso sobre preenchimento fictício -->
@@ -37,7 +67,37 @@
 </div>
 
 <style>
-  /* Ajustes para melhor responsividade */
+  .table-responsive {
+    margin-bottom: 20px;
+  }
+
+  .card-img-top {
+    max-height: 300px;
+  }
+
+  .container {
+    max-width: 1000px;
+  }
+
+  .img-thumbnail {
+    max-width: 50px;
+    height: auto;
+  }
+
+  .text-primary {
+    color: #0074e4 !important;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+
   @media (max-width: 767px) {
     .card-body {
       padding: 1rem;
@@ -56,12 +116,15 @@
     }
   }
 
-  .card-img-top {
-    max-height: 300px;
-  }
+  @media (max-width: 576px) {
+    .container {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
 
-  .container {
-    max-width: 1000px;
+    .table-responsive {
+      overflow-x: auto;
+    }
   }
 </style>
 {% endblock %}
