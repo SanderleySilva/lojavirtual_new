@@ -136,8 +136,9 @@
                     <i class="fas fa-shopping-cart"></i>
                 </button>
                 {% endif %}
-                <form class="d-flex search-bar mt-3 mt-lg-0" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos..." aria-label="Search">
+                <!-- Formulário de Pesquisa -->
+                <form class="d-flex search-bar mt-3 mt-lg-0" action="{% url 'pesquisar' %}" method="get" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos..." aria-label="Search" name="q">
                     <button class="btn btn-light" type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>

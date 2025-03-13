@@ -57,6 +57,11 @@ class PagamentoView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
+def detalhes_produto(request, id):
+    produto = get_object_or_404(Produto, id=id)
+    return render(request, 'produtos/detalhes_produto.html', {'produto': produto})
+
+
 class SucessoPagamentoView(TemplateView):
     template_name = 'pagamentos/sucesso_pagamento.html'
 

@@ -56,20 +56,10 @@ def remover_do_carrinho(request, produto_id):
 
 @login_required(login_url='/usuarios/login/')
 def detalhes_carrinho(request):
-    """
-    Exibe os detalhes do carrinho de compras do usuário logado.
-
-    Esta função busca o carrinho do usuário logado, calcula o valor total dos itens
-    no carrinho e renderiza a página de detalhes do carrinho com as informações.
-
-    Args:
-        request: O objeto de requisição HTTP.
-
-    Returns:
-        HttpResponse: Renderiza a página de detalhes do carrinho com os itens do carrinho
-                     e o valor total.
-    """
-    carrinho = Carrinho.objects.get(user=request.user)
-    itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
-    total_preco = sum(item.total_preco for item in itens_carrinho)
-    return render(request, 'carrinho/detalhes_carrinho.html', {'carrinho': carrinho, 'itens_carrinho': itens_carrinho, 'total_preco': total_preco})
+    try:
+        carrinho = Carrinho.objects.get(user=request.user)
+        itens_carrinho = ItemCarrinho.objects.filter(carrinho=carrinho)
+        total_preco = sum(item.total_preco for item in itens_carrinho)
+        return render(request, 'carrinho/detalhes_carrinho.html', {'carrinho': carrinho, 'itens_carrinho': itens_carrinho, 'total_preco': total_preco})
+    except Carrinho.DoesNotExist:
+        return render(request, 'carrinho/detalhes_carrinho.html', {'itens_carrinho': [], 'total_preco': 0, 'mensagem': "Seu carrinho está vazio."})
