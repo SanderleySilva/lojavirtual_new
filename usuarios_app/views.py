@@ -3,10 +3,19 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login as login_django
 from django.contrib.auth.models import User
-
+from django.contrib.auth import logout as logout_django
 
 @csrf_exempt
 def cadastro(request):
+    """
+    Exibe o formulário de cadastro e processa a criação de um novo usuário.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP.
+
+    Returns:
+        HttpResponse: A resposta HTTP com a página de cadastro ou a página de sucesso.
+    """
     if request.method == "GET":
         return render(request, 'cadastro.html')
     else:
@@ -33,6 +42,15 @@ def cadastro(request):
 
 @csrf_exempt
 def login(request):
+    """
+    Exibe o formulário de login e processa a autenticação do usuário.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP.
+
+    Returns:
+        HttpResponse: A resposta HTTP com a página de login ou redirecionamento para a página inicial.
+    """
     if request.method == "GET":
         return render(request, 'login.html')
     else:
@@ -46,8 +64,27 @@ def login(request):
         else:
             return render(request, 'login.html', {'error_message': 'Email ou senha inválidos!'})
 
-
-
-
 def cadastro_sucesso(request):
+    """
+    Exibe a página de sucesso após o cadastro.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP.
+
+    Returns:
+        HttpResponse: A resposta HTTP com a página de sucesso do cadastro.
+    """
     return render(request, 'cadastro_sucesso.html')
+
+def logout_view(request):
+    """
+    Faz o logout do usuário e redireciona para a página de login.
+
+    Args:
+        request (HttpRequest): O objeto de requisição HTTP.
+
+    Returns:
+        HttpResponse: Redireciona para a página de login.
+    """
+    logout_django(request)
+    return redirect('login')

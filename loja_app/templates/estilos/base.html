@@ -16,7 +16,7 @@
             font-family: 'Poppins', sans-serif;
         }
         .navbar {
-            background-color: #0074e4;
+            background-color: rgba(0, 116, 228, 0.9); /* Leve transparência */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand {
@@ -77,6 +77,20 @@
                 padding: 15px;
             }
         }
+        .logout-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 1rem;
+            color: #fff;
+            background-color: #0074e4;
+            border: none;
+            text-decoration: none;
+        }
+        .logout-btn:hover {
+            background-color: #005bb5;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -100,7 +114,29 @@
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                 </ul>
-                <form class="d-flex search-bar" role="search">
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <a class="navbar-text text-white dropdown-toggle me-3" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Olá, {{ user.username }}!
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="logout-btn" href="{% url 'logout' %}">Sair</a>
+                        </li>
+                    </ul>
+                </div>
+                <button class="cart-btn ms-3 position-relative" onclick="location.href='{% url 'carrinho_app:detalhes_carrinho' %}'">
+                    <i class="fas fa-shopping-cart"></i>
+                    {% if num_itens > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ num_itens }}</span>
+                    {% endif %}
+                </button>
+                {% else %}
+                <button class="cart-btn ms-3" onclick="location.href='{% url 'carrinho_app:detalhes_carrinho' %}'">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+                {% endif %}
+                <form class="d-flex search-bar mt-3 mt-lg-0" role="search">
                     <input class="form-control me-2" type="search" placeholder="Pesquisar produtos..." aria-label="Search">
                     <button class="btn btn-light" type="submit"><i class="fas fa-search"></i></button>
                 </form>

@@ -1,0 +1,85 @@
+{% extends 'estilos/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-primary mb-4">Carrinho de Compras</h2>
+    <div class="row">
+        {% if itens_carrinho %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagem</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in itens_carrinho %}
+                        <tr>
+                            <td><img src="{{ item.produto.imagem.url }}" alt="{{ item.produto.nome }}" class="img-thumbnail" style="max-width: 50px;"></td>
+                            <td>{{ item.produto.nome }}</td>
+                            <td>R$ {{ item.preco|floatformat:2 }}</td>
+                            <td>{{ item.quantidade }}</td>
+                            <td>R$ {{ item.total_preco|floatformat:2 }}</td>
+                            <td>
+                                <a href="{% url 'carrinho_app:remover_do_carrinho' item.produto.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Remover</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right fw-bold">Total Geral:</td>
+                        <td colspan="2" class="text-danger fw-bold">R$ {{ total_preco|floatformat:2 }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <!-- Botão para finalizar a compra -->
+            <div class="text-right">
+                <a href="{% url 'loja_app:pagamento' produto_id=itens_carrinho.0.produto.id %}" class="btn btn-primary"><i class="fas fa-credit-card"></i> Finalizar Compra</a>
+            </div>
+        {% else %}
+            <p class="text-muted">O carrinho está vazio.</p>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 900px;
+        padding-top: 20px;
+    }
+
+    .img-thumbnail {
+        max-width: 50px;
+        height: auto;
+    }
+
+    .btn-primary {
+        background-color: #0074e4;
+        border-color: #0074e4;
+    }
+
+    .btn-primary:hover {
+        background-color: #005bb5;
+        border-color: #005bb5;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .text-primary {
+        color: #0074e4 !important;
+    }
+</style>
+{% endblock %}
