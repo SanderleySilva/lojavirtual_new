@@ -1,8 +1,14 @@
+# Importa funções auxiliares para renderizar templates e redirecionar URLs
 from django.shortcuts import render, redirect
+# Importa a classe para criar respostas HTTP
 from django.http import HttpResponse
+# Importa o decorador para desativar a proteção CSRF em views específicas
 from django.views.decorators.csrf import csrf_exempt
+# Importa funções para autenticação e gerenciamento de login
 from django.contrib.auth import authenticate, login as login_django
+# Importa o modelo de usuários padrão do Django
 from django.contrib.auth.models import User
+# Importa a função para logout de usuários
 from django.contrib.auth import logout as logout_django
 
 @csrf_exempt
