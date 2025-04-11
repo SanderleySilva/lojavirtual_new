@@ -2,64 +2,76 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="text-primary">Pagamento</h1>
-    <div class="row">
+    <h1 class="text-center text-dark mb-4">Pagamento</h1>
+
+    <div class="row g-4">
         <!-- Coluna das informações dos produtos do carrinho -->
-        <div class="col-md-12 mb-3">
+        <div class="col-md-12">
             {% if itens_carrinho %}
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
+                <div class="table-responsive shadow-sm rounded border p-3">
+                    <table class="table align-middle table-hover">
+                        <thead class="text-center" style="background-color: #f0e6d2;">
                             <tr>
-                                <th scope="col">Imagem</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col">Quantidade</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Ação</th>
+                                <th>Imagem</th>
+                                <th>Nome</th>
+                                <th>Preço</th>
+                                <th>Quantidade</th>
+                                <th>Total</th>
+                                <th>Ação</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             {% for item in itens_carrinho %}
                                 <tr>
-                                    <td><img src="{{ item.produto.imagem.url }}" alt="{{ item.produto.nome }}" class="img-thumbnail" style="max-width: 50px;"></td>
-                                    <td>{{ item.produto.nome }}</td>
-                                    <td>R$ {{ item.produto.preco|floatformat:2 }}</td>
-                                    <td>{{ item.quantidade }}</td>
-                                    <td>R$ {{ item.total_preco|floatformat:2 }}</td>
                                     <td>
-                                        <a href="{% url 'carrinho_app:remover_do_carrinho' item.produto.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Remover</a>
+                                        <img src="{{ item.produto.imagem.url }}"
+                                             alt="{{ item.produto.nome }}"
+                                             class="img-thumbnail"
+                                             style="width: 60px; height: 60px; object-fit: contain;">
+                                    </td>
+                                    <td class="fw-semibold text-dark">{{ item.produto.nome }}</td>
+                                    <td class="text-success">R$ {{ item.produto.preco|floatformat:2 }}</td>
+                                    <td>{{ item.quantidade }}</td>
+                                    <td class="text-danger fw-bold">R$ {{ item.total_preco|floatformat:2 }}</td>
+                                    <td>
+                                        <a href="{% url 'carrinho_app:remover_do_carrinho' item.produto.id %}" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash-alt"></i> Remover
+                                        </a>
                                     </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="4" class="text-right fw-bold">Total Geral:</td>
-                                <td class="text-danger fw-bold">R$ {{ total_preco|floatformat:2 }}</td>
+                                <td colspan="4" class="text-end fw-bold fs-5 text-dark">Total Geral:</td>
+                                <td class="text-danger fw-bold fs-5">R$ {{ total_preco|floatformat:2 }}</td>
+                                <td></td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
             {% else %}
-                <p class="text-muted">O carrinho está vazio.</p>
+                <div class="alert alert-info text-center">
+                    O carrinho está vazio.
+                </div>
             {% endif %}
         </div>
 
         <!-- Coluna do formulário de pagamento -->
-        <div class="col-md-12 mb-3">
-            <div class="card p-4 shadow-sm h-100">
-                <h5 class="card-title">Informações de Pagamento</h5>
-                <!-- Mensagem de aviso sobre preenchimento fictício -->
+        <div class="col-md-12">
+            <div class="card shadow-sm border p-4">
+                <h5 class="card-title text-dark fw-bold mb-3">Informações de Pagamento</h5>
                 <div class="alert alert-warning">
-                    Por favor, preencha o formulário com informações fictícias, pois o sistema está em teste somente.
+                    Por favor, preencha o formulário com informações fictícias. Este sistema está em teste.
                 </div>
                 <form method="post">
                     {% csrf_token %}
                     <div class="mb-3">
                         {{ form.as_p }}
                     </div>
-                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-credit-card"></i> Comprar</button>
+                    <button type="submit" class="btn btn-gold w-100">
+                        <i class="fas fa-credit-card"></i> Comprar
+                    </button>
                 </form>
             </div>
         </div>
@@ -67,64 +79,55 @@
 </div>
 
 <style>
-  .table-responsive {
-    margin-bottom: 20px;
-  }
-
-  .card-img-top {
-    max-height: 300px;
-  }
-
-  .container {
-    max-width: 1000px;
-  }
-
-  .img-thumbnail {
-    max-width: 50px;
-    height: auto;
-  }
-
-  .text-primary {
-    color: #0074e4 !important;
-  }
-
-  .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-  }
-
-  .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-  }
-
-  @media (max-width: 767px) {
-    .card-body {
-      padding: 1rem;
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-    }
-
-    .card-text {
-      font-size: 0.9rem;
-    }
-
-    .btn {
-      font-size: 0.9rem;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .container {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-
     .table-responsive {
-      overflow-x: auto;
+        background-color: #ffffff;
+        border-radius: 10px;
     }
-  }
+
+    .img-thumbnail {
+        border: none;
+        background: #f8f9fa;
+    }
+
+    .btn-outline-danger {
+        border-radius: 8px;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-gold {
+        background-color: #d4af37;
+        border: none;
+        border-radius: 8px;
+        color: #1f1f1f;
+        font-weight: 500;
+    }
+
+    .btn-gold:hover {
+        background-color: #b88a2b;
+        color: white;
+    }
+
+    .container {
+        max-width: 1000px;
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .btn, .card-title {
+            font-size: 0.95rem;
+        }
+    }
 </style>
 {% endblock %}

@@ -1,126 +1,179 @@
 {% extends 'estilos/base.html' %}
 
 {% block content %}
-    <div class="container mt-4">
-        <h1 class="mb-4 text-center text-primary">TODOS OS PRODUTOS POR CATEGORIA</h1>
+<div class="container mt-5">
+    <h1 class="mb-5 text-center text-dark fw-bold">TODOS OS PRODUTOS POR CATEGORIA</h1>
 
-        {% for cat in categoria %}
-            {% if not cat.em_oferta %}
-                <div class="categoria-section mb-3">
-                    <h3 class="categoria-titulo text-primary fw-semibold">{{ cat.nome }}</h3>
+    {% for cat in categoria %}
+        {% if not cat.em_oferta %}
+            <div class="categoria-section mb-5">
+                <h3 class="categoria-titulo text-dark fw-semibold">{{ cat.nome }}</h3>
 
-                    <div class="row g-4">
-                        {% for produto in cat.produto_set.all %}
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div class="card produto-card shadow-sm border rounded-3 h-100">
-                                    {% load static %}
-                                    <img src="{{ produto.imagem.url }}" class="card-img-top p-2"
-                                         alt="{{ produto.nome }}"
-                                         style="width: 100%; height: 200px; object-fit: contain;">
+                <!-- Botões de scroll (mobile) -->
+                <div class="scroll-buttons mb-3 justify-content-between" id="buttons-{{ cat.id }}" style="display: none;">
+                    <button onclick="scrollLeft({{ cat.id }})" class="btn btn-outline-secondary rounded-circle">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button onclick="scrollRight({{ cat.id }})" class="btn btn-outline-secondary rounded-circle">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
 
-                                    <div class="card-body text-center d-flex flex-column">
-                                        <div class="produto-detalhes mb-3">
-                                            <h6 class="card-title text-dark fw-bold">{{ produto.name }}</h6>
-                                            <p class="card-text text-muted small">{{ produto.descricao|truncatechars:50 }}</p>
-                                            <p class="card-text text-danger fw-bold fs-5">R$ {{ produto.preco }}</p>
-                                        </div>
-                                        <div class="produto-botoes mt-auto">
-                                            <a href="{% url 'carrinho_app:adicionar_ao_carrinho' produto.id %}" class="btn btn-sm btn-primary me-1 mb-2"><i class="fas fa-cart-plus"></i> Adicionar ao Carrinho</a>
-                                            <a href="{% url 'loja_app:pagamento' produto.id %}" class="btn btn-sm btn-success"><i class="fas fa-credit-card"></i> Comprar Agora</a>
-                                        </div>
+                <div class="produtos-scroll" id="scroll-container-{{ cat.id }}">
+                    {% for produto in cat.produto_set.all %}
+                        <div class="produto-item me-3">
+                            <div class="card produto-card shadow border-0 rounded-4">
+                                <div class="produto-img-wrapper d-flex align-items-center justify-content-center bg-light p-3">
+                                    <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+                                </div>
+                                <div class="card-body d-flex flex-column text-center p-3">
+                                    <h6 class="card-title text-dark fw-semibold">{{ produto.name }}</h6>
+                                    <p class="text-muted small mb-2">{{ produto.descricao|truncatechars:50 }}</p>
+                                    <p class="text-primary fw-bold fs-5">R$ {{ produto.preco }}</p>
+                                    <div class="mt-3 d-flex flex-column gap-2">
+                                        <a href="{% url 'carrinho_app:adicionar_ao_carrinho' produto.id %}" class="btn btn-outline-dark w-100">
+                                            <i class="fas fa-cart-plus me-2"></i> Carrinho
+                                        </a>
+                                        <a href="{% url 'loja_app:pagamento' produto.id %}" class="btn btn-dark w-100">
+                                            <i class="fas fa-bolt me-2"></i> Comprar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                        {% empty %}
-                            <p class="text-muted">Nenhum produto encontrado nesta categoria.</p>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">Nenhum produto encontrado nesta categoria.</p>
+                    {% endfor %}
                 </div>
-            {% endif %}
-        {% empty %}
-            <p class="text-muted">Nenhuma categoria encontrada.</p>
-        {% endfor %}
-    </div>
+            </div>
+        {% endif %}
+    {% empty %}
+        <p class="text-muted text-center">Nenhuma categoria encontrada.</p>
+    {% endfor %}
+</div>
 
-    <style>
-        /* Estilização do nome da categoria */
-        .categoria-titulo {
-            font-size: 1.3rem; /* Tamanho mais discreto */
-            border-bottom: 2px solid #007bff; /* Linha fina abaixo */
-            padding-bottom: 5px; /* Reduzido para ficar mais clean */
-            margin-bottom: 15px; /* Espaço abaixo para não grudar nos produtos */
-        }
+<style>
+    .categoria-titulo {
+        font-size: 1.5rem;
+        border-bottom: 2px solid #dee2e6;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+    }
 
-        /* Melhorando a aparência dos produtos */
-        .produto-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .produto-card {
+        width: 250px;
+        min-width: 250px;
+        scroll-snap-align: start;
+        transition: all 0.3s ease;
+        background-color: #fff;
+    }
+
+    .produto-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .produto-img-wrapper {
+        height: 200px;
+        border-bottom: 1px solid #eee;
+        border-radius: 0.7rem 0.7rem 0 0;
+    }
+
+    .produto-img-wrapper img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .btn-outline-dark {
+        border-color: #343a40;
+        color: #343a40;
+    }
+
+    .btn-outline-dark:hover {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .btn-dark {
+        background-color: #212529;
+        border-color: #212529;
+    }
+
+    .btn-dark:hover {
+        background-color: #101418;
+        border-color: #101418;
+    }
+
+    .produtos-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 1.2rem;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding-bottom: 1rem;
+    }
+
+    .produtos-scroll::-webkit-scrollbar {
+        display: none;
+    }
+
+    .produto-item {
+        flex: 0 0 auto;
+    }
+
+    .scroll-buttons {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .scroll-buttons {
             display: flex;
-            flex-direction: column;
-            height: 100%;
         }
 
-        .produto-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        .card-title {
+            font-size: 1rem;
         }
 
-        .produto-detalhes {
-            margin-bottom: 1rem; /* Espaçamento inferior para os detalhes do produto */
+        .card-text, .btn {
+            font-size: 0.9rem;
         }
+    }
+</style>
 
-        .produto-botoes {
-            display: flex;
-            flex-direction: column; /* Empilhar os botões verticalmente */
-            gap: 0.5rem; /* Espaçamento entre os botões */
+<script>
+    function scrollLeft(id) {
+        const container = document.getElementById(`scroll-container-${id}`);
+        if (container) {
+            container.scrollBy({ left: -250, behavior: 'smooth' });
         }
+    }
 
-        /* Garantindo que todas as imagens tenham o mesmo tamanho */
-        .card-img-top {
-            height: 200px;
-            object-fit: contain;
+    function scrollRight(id) {
+        const container = document.getElementById(`scroll-container-${id}`);
+        if (container) {
+            container.scrollBy({ left: 250, behavior: 'smooth' });
         }
+    }
 
-        /* Ajustes para melhor responsividade */
-        @media (max-width: 767px) {
-            .card-body {
-                padding: 1rem;
+    function checkScrollButtons() {
+        const containers = document.querySelectorAll('[id^="scroll-container-"]');
+        containers.forEach(container => {
+            const id = container.id.replace('scroll-container-', '');
+            const buttons = document.getElementById(`buttons-${id}`);
+
+            if (buttons && window.innerWidth <= 768 && container.scrollWidth > container.clientWidth) {
+                buttons.style.display = 'flex';
+            } else if (buttons) {
+                buttons.style.display = 'none';
             }
+        });
+    }
 
-            .card-title {
-                font-size: 1.2rem;
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        checkScrollButtons();
+    });
 
-            .card-text {
-                font-size: 0.9rem;
-            }
-
-            .btn {
-                font-size: 0.9rem;
-            }
-        }
-
-        .container {
-            max-width: 1000px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
-
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
-
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-    </style>
+    window.addEventListener('resize', checkScrollButtons);
+</script>
 {% endblock %}
